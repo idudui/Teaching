@@ -50,22 +50,30 @@ namespace ConsoleApplication1
             //while
             int a1 = 1;
             int sum1 = 0;
-            while(a1 <= 50)
+            while(a1 <= 100)
             {
                 if (a1 % 2 == 0)
                 {
                     sum1 += a1;
                 }
                 a1++;
+                if(a1==51)
+                {
+                    break;
+                }
             }
             Console.WriteLine("1:50偶数的累加和为" + sum1);
             //for
             int sum2 = 0;
-            for (int a2 = 1; a2 <= 50; a2++)
+            for (int a2 = 1; a2 <= 100; a2++)
             {
                 if (a2 % 2 == 0)
                 {
                     sum2 += a2;
+                }
+                if (a2 == 51)
+                {
+                    break;
                 }
             }
             Console.WriteLine("1:50偶数的累加和为" + sum2);
