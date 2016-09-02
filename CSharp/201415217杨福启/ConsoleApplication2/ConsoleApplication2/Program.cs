@@ -40,28 +40,32 @@ namespace ConsoleApplication2
             int num = 0;
             while (a <= 100)
             {
-                if (a >= 50 && a % 2 == 1)
+                if (a % 2 == 0)
+                {
+                    continue;
+                }
+                if (a >=50)
                 {
                     num += a;
                 }
                 a++;
             }
             Console.WriteLine("50:100奇数的累加和" + num);
-            Console.WriteLine("初值" + 1);
-            Console.WriteLine("终值" + 100);
             //for
             int b = 1;
             int num1 = 0;
-            for (b = 1; b >= 50; b++)
+            for (b = 1; b <= 100; b++)
             {
-                if (b <= 100 && b % 2 == 1)
+                if (b%2==0)
+                {
+                    continue;
+                }
+                if (b>=50)
                 {
                     num1 += b;
                 }
             }
             Console.WriteLine("50:100奇数的累加和" + num1);
-            Console.WriteLine("初值" + 1);
-            Console.WriteLine("终值" + 100);
             //输入1:7返回对应的星期数。
             int day;
             Console.WriteLine("请输入1:7任意一个数字");
