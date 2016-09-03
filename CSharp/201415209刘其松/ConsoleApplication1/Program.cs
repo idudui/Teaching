@@ -11,9 +11,10 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             //姓名：刘其松   学号：201415209
-            //题目：输出“好好学习 天天向上！”
             //日期:2016年9月2日
 
+            //////////////////////////////////////////////////////////////
+            //题目：输出“好好学习 天天向上！”
             Console.WriteLine("好好学习 天天向上！");
             Console.ReadKey();
 
@@ -50,12 +51,16 @@ namespace ConsoleApplication1
             //求50:100能被7整除的数的和。并打印循环变量的初值和终值
             //while循环
 
-            int num1 = 50;
+            //修改：循环从1到100，并把1到50过滤掉
+            //修改日期：2016年9月3日
+
+            int num1 = 1;
             int sum1 = 0;
-            Console.WriteLine("初值：{0}", num1);
+            Console.WriteLine("初值：{0}", num1);//打印初值
+            //循环找符合条件的值
             while (true)
             {
-                if (num1 % 7 == 0)
+                if (num1 % 7 == 0&&num1>49)  //小于50过滤掉
                 {
                     sum1 = sum1 + num1;
                 }
@@ -64,8 +69,8 @@ namespace ConsoleApplication1
                     break;
                 num1++;
             }
-            Console.WriteLine("终值：{0}", num1);
-            Console.WriteLine("和：{0}", sum1);
+            Console.WriteLine("终值：{0}", num1);//终值
+            Console.WriteLine("和：{0}", sum1);//和
             Console.ReadLine();
 
 
@@ -75,11 +80,11 @@ namespace ConsoleApplication1
 
 
             int sum2 = 0;
-            int num2 = 50;
+            int num2 = 1;
             Console.WriteLine("初值：{0}", num2);
-            for (num2 = 50; num2 < 100; num2++)
+            for (num2 = 1; num2 < 100; num2++)
             {
-                if (num2 % 7 == 0)
+                if (num2 % 7 == 0&&num2>49)
                 {
 
                     sum2 = sum2 + num2;
@@ -95,7 +100,8 @@ namespace ConsoleApplication1
             /////////////////////////////////////////////////////
             //输入10以内整数返回是奇数还是偶数
             Console.WriteLine("输入一个10以内的整数");
-            int num3 = Convert.ToInt32(Console.ReadLine());
+            int num3 = Convert.ToInt32(Console.ReadLine());//转换为整形
+
             switch (num3)
             {
                 case 1:
