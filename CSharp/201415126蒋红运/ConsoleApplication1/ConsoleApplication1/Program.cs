@@ -89,6 +89,69 @@ namespace ConsoleApplication1
                     break;
             }
             Console.ReadLine();
+            //第二次作业 c#流程控制深入
+            //姓名：蒋红运  学号：201415126
+            //日期：2016年9月9日
+
+            //1.反序打印九九乘法表
+            int p, q;
+            for (p = 9; p >= 1; p--)
+            {
+                for (q = p; q >= 1; q--)
+                {
+                    Console.Write("{0}*{1}={2}  ", q, p, p * q);
+                }
+                Console.WriteLine();
+            }
+            Console.ReadKey();
+
+
+            //2.1用循环画图
+            int c, d;
+            for (c = 1; c <= 4; c++)
+            {
+                for (d = 1; d <= 4 - c; d++)
+                    Console.Write(" ");
+                for (d = 1; d <= 2 * c - 1; d++)
+                    Console.Write("*");
+                Console.WriteLine();
+            }
+            Console.ReadKey();
+
+
+
+            //3.1用循环画图
+            int a, b;
+            for (a = 1; a <= 4; a++)
+            {
+                if (a % 2 == 1)
+                {
+                    for (b = 1; b <= 6; b++)
+                        if (b % 2 == 1)
+                        {
+                            Console.Write("#");
+                        }
+                        else
+                        {
+                            Console.Write("*");
+                        }
+                    Console.WriteLine();
+                }
+                else
+                {
+                    for (b = 1; b <= 6; b++)
+                        if (b % 2 == 1)
+                        {
+                            Console.Write("*");
+                        }
+                        else
+                        {
+                            Console.Write("#");
+                        }
+                    Console.WriteLine();
+                }
+            }
+            Console.ReadKey();
         }
     }
 }
