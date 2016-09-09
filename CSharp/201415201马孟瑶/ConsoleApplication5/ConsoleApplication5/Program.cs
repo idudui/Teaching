@@ -56,51 +56,96 @@ namespace ConsoleApplication5
             int h; int sum2 = 0;
             for (h = 1; h <= 50; h++)
             {
-                if (h%2==0)
-                sum2 += h ;
+                if (h % 2 == 0)
+                    sum2 += h;
                 continue;
             }
             Console.WriteLine("1-50偶数的累加和为{0}.", sum2);
             Console.ReadKey();
             //第五题：用switch（case）输入一个月份(1:12)返回对应季节
-             Console.WriteLine("请输入月份：");
-             int m = Convert.ToInt32(Console.ReadLine());
-             switch (m  )
-                {
-                 case 1:
-                 case 2:
-                 case 3:
-                      Console.WriteLine(m +"月份是春季");
-                     break ;
-                 case 4:
-                 case 5:
-                 case 6:
-                     Console.WriteLine(m +"月份是夏季");
-                     break;
-                 case 7:
-                 case 8:
-                 case 9:
-                     Console.WriteLine(m +"月份是秋季");
-                     break;
-                 case 10:
-                 case 11:
-                 case 12:
-                     Console.WriteLine(m +"月份是冬季");
-                     break;
-             } 
+            Console.WriteLine("请输入月份：");
+            int m = Convert.ToInt32(Console.ReadLine());
+            switch (m)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    Console.WriteLine(m + "月份是春季");
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                    Console.WriteLine(m + "月份是夏季");
+                    break;
+                case 7:
+                case 8:
+                case 9:
+                    Console.WriteLine(m + "月份是秋季");
+                    break;
+                case 10:
+                case 11:
+                case 12:
+                    Console.WriteLine(m + "月份是冬季");
+                    break;
+            }
             Console.ReadKey();
-
-
-
-
-
-
-
+            //第二周作业
+            //201415201 马孟瑶
+            //2016年9月9日
+            //第一题：反序打印九九乘法表
+            {
+                int i;
+                int j;
+                for (i = 9; i >= 1; i--)
+                {
+                    for (j = i; j >= 1; j--)
+                    {
+                        Console.Write(j + "*" + i + "=" + i * j + "  ");
+                    }
+                    Console.Write("\n");
+                }
+                Console.ReadKey();
+                //第二题：用循环画图
+                int i; int k;
+                for (i = 1; i < 5; i++)
+                {
+                    int j = 4;
+                    for (j = j - i; j > 0; j--)
+                    {
+                        Console.Write(" ");
+                    }
+                    for (k = 1; k <= 2 * i - 1; k++)
+                    {
+                        Console.Write("*");
+                    }
+                    Console.Write("\n");
+                }
+                Console.ReadKey();
+                //第三题；
+                int x;
+                int y;
+                for (x = 1; x <= 4; x++)
+                {
+                    for (y = 1; y <= 8; y++)
+                    {
+                        if (x % 2 == 1 && y % 2 == 0)
+                        {
+                            Console.Write("#*");
+                        }
+                        if (x % 2 == 0 && y % 2 == 1)
+                        {
+                            Console.Write("*#");
+                        }
+                    } 
+                    Console.Write("\n");
+                }
+                Console.ReadKey();
+            }
         }
-
-
     }
 }
+
+
 
 
 
