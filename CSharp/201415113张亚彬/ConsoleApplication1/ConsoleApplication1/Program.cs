@@ -60,11 +60,11 @@ namespace ConsoleApplication1
             {
                 if (i == 1)
                     Console.WriteLine(1);
-
+                //判断
+                if (i % 3 != 0)
+                    n += i;
             }
-            //判断
-            if (i % 3 != 0)
-                n += i;
+
             //输出
             Console.WriteLine("1：50中不能被3整除的数的和为" + sum);
             Console.ReadKey();
@@ -75,14 +75,14 @@ namespace ConsoleApplication1
             //输入一个月份
             Console.WriteLine("输入月份");
             int m = Convert.ToInt32(Console.ReadLine());
-            if  (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+            if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
                 i = 31;
             if (m == 4 || m == 6 || m == 9 || m == 11)
                 i = 30;
             if (m == 2)
                 i = 28;
             //输出i
-            Console.WriteLine(i );
+            Console.WriteLine(i);
             Console.ReadKey();
 
 
