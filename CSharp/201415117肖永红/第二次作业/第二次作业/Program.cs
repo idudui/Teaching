@@ -51,7 +51,7 @@ namespace 第二次作业
                     for (b = 1; b < 4+a; b++)//从最左侧空白处起至最后一个*的间距为3+a
                     {
                         if (b < 5 -a)
-                            Console.Write(" ");//输出空白
+                            Console.Write(" ");//输出空格
                         else
                             Console.Write("*");//输出*
                     }
