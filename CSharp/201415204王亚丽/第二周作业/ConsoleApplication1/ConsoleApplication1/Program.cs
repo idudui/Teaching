@@ -10,8 +10,7 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-
-             //实验一:c#语法及流程控制基础
+            //实验一:c#语法及流程控制基础
             //学号：201415204  姓名：王亚丽
 
 
@@ -77,7 +76,7 @@ namespace ConsoleApplication1
                 if (t % 7 == 0)           //if语句，判断t是否能被7整除
                 {
 
-                    w += t;        
+                    w += t;
                 }
                 continue;
             }
@@ -98,7 +97,7 @@ namespace ConsoleApplication1
                 case 3:
                 case 5:
                 case 7:
-                case 9:   
+                case 9:
                     Console.WriteLine("奇数");     //若z的值与以上任意一个case常量的值相等，输出“奇数”
                     break;
                 case 0:
