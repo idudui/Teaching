@@ -54,12 +54,12 @@ namespace ConsoleApplication1
             //string userName;
             //Console.WriteLine("aaaaaaaa:");
 
-            //接收数据，同时把接收到的数据赋值给userName
+            ////接收数据，同时把接收到的数据赋值给userName
             //userName = Console.ReadLine();
             //Console.WriteLine("Welcome {0}!", userName);
             //Console.WriteLine("Now give me a number:");
 
-            //接收数据,数据转换，赋值
+            ////接收数据,数据转换，赋值
             //firstNumber = Convert.ToDouble(Console.ReadLine());
 
             //Console.WriteLine("Now give me another number:");
@@ -74,13 +74,14 @@ namespace ConsoleApplication1
             //            firstNumber, secondNumber, firstNumber / secondNumber);
             //Console.WriteLine("The remainder after dividing {0} by {1} is {2}.",
             //            firstNumber, secondNumber, firstNumber % secondNumber);
+            ////屏幕停在当前位置
             //Console.ReadKey();
 
 
             //3.3.3 运算符的优先级
             //A加括号即可  B、赋值运算符优先级是最低的
 
-            //3.3.4命名空间：按层级和顺序组织的类库
+            //3.3.4 命名空间：按层级和顺序组织的类库
 
 
 
@@ -90,15 +91,19 @@ namespace ConsoleApplication1
             bool isLessThan10;
             isLessThan10 = myInteger < 10;
 
+            myString = "karli";
+
             bool isKarli;
             isKarli = myString == "karli";
 
             //&和&&  |和|| 区别：&&优于&； &可以用于位运算；
+            //&&：false  && (一大堆运算)  
 
             //4.1.1 位运算符
             int result, op1, op2;
-            op1 = 4;
-            op2 = 5;
+            op1 = 4;// 1 0 0 
+            op2 = 5;// 1 0 1
+            // 0 0 1
             result = op1 & op2;
             result = op1 | op2;
             result = op1 ^ op2;
@@ -109,7 +114,7 @@ namespace ConsoleApplication1
             bool containsRed;
             myColor = myColor | 2;//增加一点绿色
             myColor = myColor | 4;//增加一点红色
-            containsRed = (myColor & 4) == 4; //检查红色位是否为1
+            containsRed = (myColor & 4) == 4; // 检查红色位是否为1
             //位移运算 >>  <<
 
 
@@ -133,12 +138,12 @@ namespace ConsoleApplication1
             //4.2.2 if语句
             //string resultString;
             //if (myInteger < 10)
-            //{ 
-            //    resultString = "小于10"; 
+            //{
+            //    resultString = "小于10";
             //}
             //else
-            //{ 
-            //    resultString = "大于等于10"; 
+            //{
+            //    resultString = "大于等于10";
             //}
 
             //例4.2 if语句
@@ -147,15 +152,20 @@ namespace ConsoleApplication1
             //double var1 = Convert.ToDouble(Console.ReadLine());
             //Console.WriteLine("Enter another number:");
             //double var2 = Convert.ToDouble(Console.ReadLine());
+            ////if (var1 < var2)
+            ////    comparison = "less than";
+            ////else
+            ////{
+            ////    if (var1 == var2)
+            ////        comparison = "equal to";
+            ////    else
+            ////        comparison = "greater than";
+            ////}
             //if (var1 < var2)
             //    comparison = "less than";
-            //else
-            //{
-            //    if (var1 == var2)
-            //        comparison = "equal to";
-            //    else
-            //        comparison = "greater than";
-            //}
+            //else if (var1 == var2) { comparison = "equal to"; }
+            //else { comparison = "greater than"; }
+
             //Console.WriteLine("The first number is {0} the second number.",
             //                  comparison);
             //Console.ReadKey();
@@ -186,7 +196,7 @@ namespace ConsoleApplication1
             //Console.WriteLine("Hello {0}!", name);
             //Console.ReadKey();
 
-            
+
 
             //4.3 循环
             //4.3.1 do循环
@@ -233,7 +243,8 @@ namespace ConsoleApplication1
             //int totalYears = 0;
             //while (balance < targetBalance)
             //{
-            //    balance *= interestRate;
+            //    //balance *= interestRate;
+            //    balance = balance*interestRate;
             //    ++totalYears;
             //}
             //Console.WriteLine("In {0} year{1} you'll have a balance of {2}.",
@@ -243,17 +254,22 @@ namespace ConsoleApplication1
 
             //4.3.3 for循环
             //例4.6 for循环
-            //double realCoord, imagCoord;
-            //double realTemp, imagTemp, realTemp2, arg;
-            //int iterations;
+            //double realCoord, imagCoord; //实部X 虚部Y
+            //double realTemp, imagTemp, realTemp2, arg;//临时参数
+            //int iterations;//N的迭代次数
+
+            ////两层循环：根据两个变量做一个嵌套循环
             //for (imagCoord = 1.2; imagCoord >= -1.2; imagCoord -= 0.05)
             //{
             //    for (realCoord = -0.6; realCoord <= 1.77; realCoord += 0.03)
             //    {
+            //        //给中间变量赋值
             //        iterations = 0;
             //        realTemp = realCoord;
             //        imagTemp = imagCoord;
             //        arg = (realCoord * realCoord) + (imagCoord * imagCoord);
+
+            //        //根据中间变量arg、iterations进行判断，同时循环计算：对中间变量重新赋值
             //        while ((arg < 4) && (iterations < 40))
             //        {
             //            realTemp2 = (realTemp * realTemp) - (imagTemp * imagTemp)
@@ -263,6 +279,8 @@ namespace ConsoleApplication1
             //            arg = (realTemp * realTemp) + (imagTemp * imagTemp);
             //            iterations += 1;
             //        }
+
+            //        //根据参数iterations画点
             //        switch (iterations % 4)
             //        {
             //            case 0:
@@ -279,7 +297,8 @@ namespace ConsoleApplication1
             //                break;
             //        }
             //    }
-            //    Console.Write("\n");
+
+            //    Console.Write("\n");//换行
             //}
             //Console.ReadKey();
 
@@ -292,6 +311,25 @@ namespace ConsoleApplication1
             //    if ((i % 2) == 0) continue;
             //    Console.WriteLine("{0}",i++);
             //}
+
+            //复习题
+            //1.函数类型；
+            int i = 10;
+            //Console.WriteLine("iiiii");//"i"是字符串，不是变量; i才是变量
+            //Console.WriteLine(i);
+            //Console.ReadKey();
+
+            string s1 = "abc";
+            char char1 = 'a';//char类型是单引号括起来的单个字符；
+            s1 = "\"abc\"";s1 = "\\";
+            s1 = @"C:\Documents and Settings\Administrator\桌面\实验一";
+            
+
+            //s1 = "\""; // 转义字符\：紧挨着后面的字符按照普通字符输出
+            
+            Console.WriteLine(s1);
+            Console.ReadKey();
+            
 
         }
     }
