@@ -159,67 +159,220 @@ labs2=paste("result.",1:4,sep="");labs2
 labs3=paste(1:10);labs3 #等同于命令as.character(1:10)
 labs4=paste("Today is",date());labs4
 labs5=paste(c('a','b'),collapse='.');labs5 
+?paste
+
+paste(1:10)  #same as as.character(1:10)
+y<-paste(1:10,collapse='s');y
+x1<-paste(1,2,3,4,5,collapse='s');x1
+x2<-paste("1","2","3","4","5",collapse='s');x2
+
+
+#2.2.6 复数向量 
+x <- seq(-pi, pi, by=pi/10)
+y <- sin(x)
+z <- complex(re=x, im=y) #产生复数complex
+plot(z)
+lines(z)
+
+#向量下标运算
+#下标取值
+x <- c(1,4,7)
+x[2]
+(c(1, 3, 5) + 5)[2]
+#下标赋值
+x[2] <- 125 #单独改变一个元素的值
+x
+x[c(1,3)] <- c(144, 169)
+x
+
+
+# 1、逻辑向量
+x <- c(1,4,7)
+x < 5
+x[x<5]
+z <- c(-1, 1:3, NA)
+z[is.na(z)] <- 0
+z <- c(-1, 1:3, NA);z
+y <- z[!is.na(z)]  #将向量中非缺失数据赋给另一个向量
+y
+(z+1)[(!is.na(z)) & z>0] -> x
+x
+
+#改变部分元素值的技术与逻辑值下标结合可以定义分段函数
+y <- numeric(length(x)) #numeric产生数值型向量
+y[x<0] <- 1 - x[x<0]
+y[x>=0] <- 1 + x[x>=0]
+y
+
+#2、下标的正整数运算
+v <- 10:20
+v[c(1,3,5,9)]
+v[1:5]
+v[c(1,2,3,2,1)]
+c("a","b","c")[rep(c(2,1,3), times=3)]
+
+#3、下标的负整数运算--表示扣除相应的元素
+v[-(1:5)] 
+
+
+#4、取字符型值的下标向量
+ages <- c(Li=33, Zhang=29, Liu=18)
+ages
+ages["Zhang"]
+
+#向量元素名可以后加
+fruit <- c(5, 10, 1, 20)
+names(fruit) <- c("orange", "banana", "apple", "peach")
+fruit
+
+
+
+#2.3 对象和它的模式和属性
+#2.3.1 R对象都有两个固有属性：mode和length
+mode(c(1,3,5)>5)
+
+#检验对象属性
+z <- 0:9
+is.numeric(z)
+is.character(z)
+length(2:4)
+length(z)
+
+#类型转换
+digits <- as.character(z); digits
+d <- as.numeric(digits); d
+
+#2.3.2 修改对象的长度
+x <- numeric();x  #长度为0
+x[3] <- 17
+x
+
+#增加对象长度
+x <- 1:3
+x <- 1:4     
+
+#减少对象长度
+x <- x[1:2]  
+x
+alpha <- 1:10
+alpha <- alpha[2 * 1:5]
+alpha
+
+
+#2.3.3 attributes() 和 attr()函数--返回特殊属性
+x <- c(apple=2.5,orange=2.1); x
+attributes(x)
+
+#存取对象object的名为names的属性
+attr(x,"names")
+attr(x,"names") <- c("apple","grapes"); x #改变属性值
+attr(x,"type") <- "fruit"; x #定义新属性
+
+#查看所有特殊属性
+attributes(x)
+
+
+#2.3.4 对象的class属性
 
 
 
 
+#2.4 因子
+#2.4.1 factor() 函数
+sex <- c("M","F","M","M", "F")
+sexf <- factor(sex); sexf
+?factor
+
+#获取因子水平
+sex.level <- levels(sexf); sex.level
+#统计各类数据的频数
+sex.tab <- table(sexf); sex.tab
+
+#2.4.2 tapply()函数：分组计算
+height <- c(174, 165, 180, 171, 160)
+#分组计算
+tapply(height, sex, mean)
+
+#2.4.3 gl(函数) ：产生因子
+?gl
+gl(3,5)
+gl(3,1,15)
+
+
+#2.5 多维数组和矩阵
+#2.5.1 生成数组或矩阵
+#1 将向量定义成数组
+z<-1:12
+dim(z)<-c(3,4)
+z
+#再把向量定义为一维数组
+dim(z)<-12
+z
+
+#2 用array()函数构造多维数组
+X <- array(1:20,dim=c(4,5))
+X
+Z <- array(0,dim=c(3, 4, 2))
+Z
+
+#3 用matrix（）函数构造矩阵
+A<-matrix(1:15, nrow=3,ncol=5,byrow=TRUE)
+A
+#下面两种方法效果一样
+A<-matrix(1:15, nrow=3,byrow=TRUE)
+A<-matrix(1:15, ncol=5,byrow=TRUE)
 
 
 
 
+#2.5.2 数组下标
+#2.5.2.1 数组下标
+a <- 1:24
+dim(a) <- c(2,3,4)
+a
+a[2, 1, 2]
+a[1, 2:3, 2:3]
+a[1, , ]
+a[ , 2, ]
+a[1,1, ]
+
+#为数组每个元素赋值0
+a []<-0 
+
+#用数据向量来取子集
+a[3:10]
+
+#2.5.2.2 不规则的数组下标
+#先定义一个矩阵
+b <- matrix(c(1,1,1,2,2,3,1,3,4,2,1,4), ncol=3, byrow=T)
+b
+#用定义好的矩阵的元素定义位置，取出对应内容
+a[b]
+#可以给其赋值
+a[b] <- c(101,102,103,104)
+a
 
 
 
+#2.5.3 数组的四则运算
+A <- matrix(1:6, nrow=2, byrow=T); A
+B <- matrix(1:6, nrow=2); B
+C <- matrix(c(1,2,2,3,3,4), nrow=2); C
+D <- 2*C+A/B; D
+
+#长短不一样的向量（或数组）进行运算
+x1 <- c(100,200)
+x2 <- 1:6
+x1+x2
+x3 <- matrix(1:6, nrow=3);x3
+x1
+x1+x3
+#无法匹配的时候会警告
+x2 <- 1:5
+x1+x2
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#2.5.4 矩阵的运算
 
 
 
