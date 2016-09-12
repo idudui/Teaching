@@ -1,9 +1,6 @@
 ##加载程序包
-library(plyr)
 library(TTR)
 library(quantmod)
-library(ggplot2)
-library(scales)
 library(zoo)
 library(xts)
 ##下载数据
@@ -47,53 +44,84 @@ buy2=NULL##买点2
 sale2=NULL##卖点2
 xianjin1=NULL##现金1
 xianjin2=NULL##现金2
+cgs1=NULL##持股数1
+cgs2=NULL##持股数2
 for(i in 1:r){
   ##1条均线交易策略
-  if(i<20){##前20条初始化
+  if(i<22){##前22条初始化
     buy1=append(buy1,0)
     sale1=append(sale1,0)
     xianjin1=append(xianjin1,100000)
+    cgs1=append(cgs1,0)
   }else{
-    if(IBM[i-1,4]>IBM[i-1,8]&&IBM[i,4]<=IBM[i,8]){##买点
+    if(IBM[i-2,4]>IBM[i-2,8]&&IBM[i-1,4]<=IBM[i-1,8]){##买点
       buy1=append(buy1,1)
       sale1=append(sale1,0)
       xianjin1=append(xianjin1,xianjin1[i-1]-IBM[i,4])
+      cgs1=append(cgs1,1)
     }else{
-      if(IBM[i-1,4]<IBM[i-1,8]&&IBM[i,4]>=IBM[i,8]){##卖点
-        buy1=append(buy1,0)
-        sale1=append(sale1,-1)
-        xianjin1=append(xianjin1,xianjin1[i-1]+IBM[i,4])
+      if(IBM[i-2,4]<IBM[i-2,8]&&IBM[i-1,4]>=IBM[i-1,8]){##卖点
+        if(cgs1[i-1]>0){
+          buy1=append(buy1,0)
+          sale1=append(sale1,-1)
+          xianjin1=append(xianjin1,xianjin1[i-1]+IBM[i,4])
+          cgs1=append(cgs1,0)
+        }else{
+          buy1=append(buy1,0)
+          sale1=append(sale1,0)
+          xianjin1=append(xianjin1,xianjin1[i-1])
+          cgs1=append(cgs1,cgs1[i-1])
+        }
       }else{##不卖不卖点
         buy1=append(buy1,0)
         sale1=append(sale1,0)
         xianjin1=append(xianjin1,xianjin1[i-1])
+        cgs1=append(cgs1,cgs1[i-1])
       }
     }
   }
   
   ##2条均线交易策略
-  if(i<20){##前20条初始化
+  if(i<22){##前20条初始化
     buy2=append(buy2,0)
     sale2=append(sale2,0)
     xianjin2=append(xianjin2,100000)
+    cgs2=append(cgs2,0)
   }else{
-    if(IBM[i-1,7]>IBM[i-1,8]&&IBM[i,7]<=IBM[i,8]){##买点
+    if(IBM[i-2,7]>IBM[i-2,8]&&IBM[i-1,7]<=IBM[i-1,8]){##买点
       buy2=append(buy2,1)
       sale2=append(sale2,0)
       xianjin2=append(xianjin2,xianjin2[i-1]-IBM[i,4])
+      cgs2=append(cgs2,1)
     }else{
-      if(IBM[i-1,7]<IBM[i-1,8]&&IBM[i,7]>=IBM[i,8]){##卖点
-        buy2=append(buy2,0)
-        sale2=append(sale2,-1)
-        xianjin2=append(xianjin2,xianjin2[i-1]+IBM[i,4])
+      if(IBM[i-2,7]<IBM[i-2,8]&&IBM[i-1,7]>=IBM[i-1,8]){##卖点
+        if(cgs2[i-1]>0){
+          buy2=append(buy2,0)
+          sale2=append(sale2,-1)
+          xianjin2=append(xianjin2,xianjin2[i-1]+IBM[i,4])
+          cgs2=append(cgs2,0)
+        }else{
+          buy2=append(buy2,0)
+          sale2=append(sale2,0)
+          xianjin2=append(xianjin2,xianjin2[i-1])
+          cgs2=append(cgs2,cgs2[i-1])
+        }
       }else{##不买不卖点
         buy2=append(buy2,0)
         sale2=append(sale2,0)
         xianjin2=append(xianjin2,xianjin2[i-1])
+        cgs2=append(cgs2,cgs2[i-1])
       }
     }
   }
-
+  if(i==r){##最后一天把所有持有的股票卖了
+    buy1[i]=0
+    buy2[i]=0
+    sale1[i]=0
+    sale2[i]=0
+    xianjin1[i]=xianjin1[i]+IBM[i,4]*cgs1[i]
+    xianjin2[i]=xianjin2[i]+IBM[i,4]*cgs2[i]
+  }
 }
   
 IBM=cbind(IBM,buy1,sale1,buy2,sale2,xianjin1,xianjin2)##合并各个数据
