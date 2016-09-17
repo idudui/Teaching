@@ -46,9 +46,9 @@ namespace ConsoleApplication1
 
             //第三大题第五小题
             int m, n;
-            for(m = 1; m < 5; m++)
+            for (m = 1; m < 5; m++)
             {                //控制行
-                for(n = 1; n < 5; n++)
+                for (n = 1; n < 5; n++)
                 {          //控制列
                     Console.Write("#*");
                 }
@@ -58,4 +58,3 @@ namespace ConsoleApplication1
         }
     }
 }
-
