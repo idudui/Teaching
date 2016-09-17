@@ -723,9 +723,270 @@ dev.off()
 
 #########################################################################################
 
+###   07.金融数据获取
+# 课程内容：从雅虎金融等数据网站获取：各国股票、股指、债券、ETF基金、汇率、金属、期权等交易品种历史数据和上市公司年报数据
+
+#加载软件包
+library(quantmod)
+
+## 不设置来源则默认从雅虎金融下载；
+# 雅虎金融上大量指数品种都以"^"开头
+# from,to参数设置读取历史数据的时间段
+getSymbols("^GSPC",src="yahoo",from="1994-1-1",to=Sys.Date()) 
+#加载"^GSPC"从"yahoo"下载时间从"1994-1-1"至今
+head(GSPC) #头数据6个
+tail(GSPC) #尾数据6个
+class(GSPC) #类型
+is.OHLC(GSPC)  #是否为OHLC  为quantmod包自带函数 (open high low close)
+is.OHLCV(GSPC)  #是否为OHLCV (open high low close volume)
+
+
+# 从雅虎金融读取著名的苹果公司的全部股票数据
+getSymbols("AAPL",src="yahoo",from="1900-1-1",to=Sys.Date()) 
+head(AAPL)
+tail(AAPL)
+
+
+# 从雅虎金融读取著名港股长江实业的股票数据
+# 港股和大陆A股类似使用数字编号，雅虎金融上面有全球几十个市场的数据需要进行区分
+# 美股不使用后缀而其他国家或地区的股票需要使用后缀:
+#大陆沪市使用:".SS"，深市使用:".SZ"，香港使用:".HK"
+setSymbolLookup(CJSY=list(name="0001.HK",src="yahoo"))   
+# 在函数内部用列表指明股票代码和查询网站并指定一个变量名便于保存
+getSymbols("CJSY",from="1900-1-1",to=Sys.Date())
+head(CJSY)
+tail(CJSY)
+
+
+## 用字符串向量保存股票代码一次下载一组股票数据
+# 下载股票数量超过5种时系统会自动暂停1秒 减轻网站负担
+szSymbols <- c("MSFT","ORCL","GOOG","INTL","AAPL","CSCO","SYMC","TSLA")
+getSymbols(szSymbols,src="yahoo",from="2008-1-1",to=Sys.Date()) 
+
+
+# 美国10年期债券收益率
+getSymbols("^TNX",src="yahoo",from="1900-1-1",to=Sys.Date()) 
+head(TNX)
+tail(TNX)   #收益率越高 经济越差
+
+
+# ETF基金，伊斯兰地区ETF基金，2008-03-28  政治危机
+getSymbols("ACWI",src="yahoo",from="1900-1-1",to=Sys.Date()) 
+head(ACWI)
+tail(ACWI)
+
+
+# 获取美元兑日元汇率数据
+# 只能获取最近1年多的汇率历史数据，并且只有收盘价
+getFX("USD/JPY")  #FX  foreign exchanges  数字变大 日元贬值
+head(USDJPY)
+tail(USDJPY)
+
+
+# 获取欧元兑美元汇率数据
+getSymbols("EUR/USD",src="oanda")  #数据源"oanda" 不是雅虎
+head(EURUSD)
+tail(EURUSD)
+
+
+# 运行这一段代码会出现错误，该数据源每次请求只能获取500天以内的数据
+# 外汇是极其重要的交易品种，每天成交量超过5.3万亿美金，大型对冲基金都要操作
+# 获取超过30年，每天OHLC历史数据的方法在第9课中详细介绍
+getSymbols("EUR/USD",src="oanda",from="2005-01-01")
+
+
+# 获取交易品当前最新的详细报价数据信息
+tmp <- getQuote("AAPL");tmp
+class(tmp)
+
+# 获取财报信息
+getFinancials("TSLA")
+viewFin(TSLA.f)
+
+viewFin(TSLA.f,"CF","A")    #  每年的现金流
+
+
+# 获得股票的股息历史数据
+getDividends("AAPL")
+
+
+# 获得股票的拆分信息
+getSplits("BIDU")   #0.1  一股拆10股
+
+
+## 对股票进行除权除息调整
+# 除权除息对于早期历史数据影响更明显
+getSymbols("BIDU", from="2005-01-01", src="yahoo")
+head(BIDU)
+head(BIDU.a  <- adjustOHLC(BIDU))   # 默认调整方式不使用Adjusted列的数据
+head(BIDU.uA <- adjustOHLC(BIDU, use.Adjusted=T)) 
+
+
+# 计算除权除息之后的开盘价收盘价收益率和收盘价收益率，保持不变
+head(cbind(OpCl(BIDU),OpCl(BIDU.a),OpCl(BIDU.uA)))   #OpCl 开盘收盘
+head(cbind(ClCl(BIDU),ClCl(BIDU.a),ClCl(BIDU.uA)))   #ClCl 收盘收盘
 
 
 
+## 获取期权信息
+# 期权是极为重要的交易品种
+
+BIDU.OPT <- getOptionChain("BIDU")
+class(BIDU.OPT)  # 获取的期权链数据保存在列表中
+BIDU.OPT         # 显示全部期权链数据量非常大  calls 看涨期权 puts 看跌期权
+BIDU.OPT$symbol  # 显示期权链列表中的symbol数据
+BIDU.OPT$calls   # 显示期权链列表中的看涨期权数据
+
+#########################################################################################
+#心得：
+#数据下载getSymbols("^GSPC",src="yahoo",from="1994-1-1",to=Sys.Date()) 
+#加载"^GSPC"从"yahoo"下载时间从"1994-1-1"至今
+# 获取汇率数据 getFX()
+# 获取交易品当前最新的详细报价数据信息 getQuote()
+# 获得股票的股息历史数据 getDividends("AAPL")
+# 获取期权信息 getOptionChain()
+#对于股票 期货 等金融数据了解甚少 很多专业名词与数据实质不能很好理解
+
+#########################################################################################
+
+###   08.金融数据绘图与技术指标
+# 课程内容：金融时间序列的绘图、quantmod软件包中的专用函数绘图、把常用技术指标、成交量等内容加入图形
+
+# 获得数据
+library(quantmod)  #后面多数函数来自这个包
+getSymbols("^GSPC",src="yahoo",from="2004-1-1",to="2014-1-1")
+tail(GSPC)
+GSPCClose <- Cl(GSPC)  #Cl()获得收盘价
+tail(GSPCClose)  
+
+# plot()是泛型函数能够根据输入自变量的类型不同调用不同模块绘制图形
+# 只能对收盘价这样的单个数据点绘图
+windows()  #新建窗体
+plot(GSPCClose)
+
+
+## chartSeries() 绘图
+# 函数可以直接接受OHLCV时间序列作为输入
+windows()
+chartSeries(GSPC)  #时间序列绘图
+
+
+# 只用收盘价数据也没问题
+windows()
+chartSeries(GSPCClose)  
+
+
+# chartSeries()详细参数使用
+windows()
+chartSeries(GSPC,
+            name="标普500走势图",
+            type="candlesticks",       # 蜡烛图
+            subset="2012/2013",        # ISO8601风格的字符串用于表示时间范围
+            TA=NULL,                   # 默认使用"addVo()"将成交量显示在图形底部，设置为NULL增加显示范围
+            theme=chartTheme("white")) # 使用名为"white"的绘图主题 默认black
+
+## 获取white绘图主题的参数
+theme.white <- chartTheme("white")
+
+# 查看绘图主题所有参数
+names(theme.white)
+
+theme.white$up.col <- "red"  #上涨
+theme.white$dn.col <- "white"  #下跌
+theme.white$border <- "lightgray"  #边界
+
+
+windows()
+chartSeries(GSPC,
+            name="标普500走势图",
+            type="candlesticks",
+            subset="2013-6/",        # 2013年6月到最后一个数据
+            TA=NULL,     
+            theme=theme.white)       # 使用参数经过修改的绘图主题
+
+
+# 使用文字描述的取子集功能
+windows()
+chartSeries(GSPC,
+            name="标普500走势图",
+            show.grid = T,           # 无论是否使用此参数都看到
+            type="candlesticks",
+            subset="last 3 months",  # 使用文字描述，最后3个月时间序列值
+            TA="addVo()",            # 加入成交量数据
+            theme=theme.white)       
+
+
+
+# reChart()的大多数参数和chartSeries()相似用于对最新绘制的图形做修改
+reChart(theme=chartTheme("black"),  #主题改为black
+        subset="last 6 months")     #数据改为"last 6 months"
+
+
+# 加入多个技术指标
+windows()
+chartSeries(GSPC,
+            name="标普500走势图",
+            show.grid = T,             # 无论是否使用此参数都看到
+            type="candlesticks",
+            subset="last 2 quarters",  # 使用文字描述，最后2个季度的时间序列值
+            TA="addVo();addSMA(20);addBBands(20,3)", # 加入简单移动平均线和布林线指标，不是指标函数
+            theme=theme.white)         # 使用参数经过修改的绘图主题
+
+
+## chartSeries()函数绘制出的图形通过zooom()函数做缩放操作
+# n   每次调用函数时交互图形变化的倍数
+# eps 点击鼠标几次图形发生改变
+zooom(n=1,eps=2)
+
+
+# 放大2012年的历史数据
+zoomChart("2012")
+
+# 放大2012年9月的历史数据，第三轮QE（量化宽松）启动
+zoomChart("2012-9")
+
+# 直接使用addCCI()函数在当前图形上添加新技术指标
+addCCI(20)  #周期20 CCI  商品通道指标
+
+## 保存绘制的图形
+windows()
+chartSeries(GSPC,
+            name="标普500走势图",
+            show.grid = T,             # 无论是否使用此参数都看到
+            type="candlesticks",
+            subset="last 2 quarters",  # 使用文字描述，最后2个季度的时间序列值
+            TA="addVo();addSMA(20);addBBands(20,3)", # 加入简单移动平均线和布林线指标，不是指标函数
+            theme=theme.white)         # 使用参数经过修改的绘图主题  
+
+
+# 默认使用的是"pdf"参数，图形被保存在当前目录下
+# 运行时经常出错
+saveChart(.type="jpeg",dev=dev.cur())
+
+
+
+# 使用jpeg()和dev.off()函数配合保存绘制的图形到JPEG文件中
+jpeg("GSPC.jpeg")
+chartSeries(GSPC,
+            name="标普500走势图",
+            show.grid = T,             # 无论是否使用此参数都看到
+            type="candlesticks",
+            subset="last 2 quarters",  # 使用文字描述，最后2个季度的时间序列值
+            TA="addVo();addSMA(20);addBBands(20,3)", # 加入简单移动平均线和布林线指标，不是指标函数
+            theme=theme.white)         # 使用参数经过修改的绘图主题  
+dev.off()
+
+#########################################################################################
+#心得：
+# plot()是泛型函数能够根据输入自变量的类型不同调用不同模块绘制图形
+# chartSeries() 绘图 函数可以直接接受OHLCV时间序列作为输入
+# chartSeries()详细参数使用 和修改
+# 使用文字描述的取子集功能 subset="last 3 months", 使用文字描述，最后3个月时间序列值
+# reChart()的大多数参数和chartSeries()相似用于对最新绘制的图形做修改
+# chartSeries()函数绘制出的图形通过zooom()函数做缩放操作
+# 复习图片保存
+
+#########################################################################################
 
 
 
