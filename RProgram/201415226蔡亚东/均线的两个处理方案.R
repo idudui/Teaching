@@ -1,0 +1,133 @@
+############下载数据文件###################
+download<-function(stock,from="2010-01-01")
+{
+  df<-getSymbols(stock,from=from,env=environment(),auto.assign=FALSE)##下载数据
+  names(df)<-c("Open","High","Low","Close","Volume","Adjusted")
+  write.zoo(df,file=paste(stock,".csv",sep=""),sep=",",quote=FALSE)##保存到本地
+}  
+#########读取数据文件################
+read<-function(stock)
+{
+  as.xts(read.zoo(file=paste(stock,".csv",sep=""),header=TRUE,sep=",",format="%Y-%m-%d"))
+}
+stock<-"IBM"
+setwd('C:/Users/Administrator/Desktop/C#提高')#######设置下载路径
+download(stock,from='2010-01-01')
+IBM<-read(stock)
+y=IBM[,4]
+m=length(IBM[,4])
+A=function(m,r,n)
+{ 
+    r=m-n+1
+    s=n-1
+    x=matrix(nrow=r,ncol=n)
+    for (i in 1:n)
+    {
+      x[,i]=y[i:(m-n+i)]
+    }
+    q=append(apply(x,1,mean),rep(0,s),after = 0)####求均值
+    q
+}
+xianjin=matrix(0,nrow=m,ncol=1)###现金
+mxh=NULL#######买信号
+bj=NULL########标记
+r=matrix(0,nrow=m,ncol=1)
+###单均线（20均线）
+q1=A(m,r,20)###20均线
+q2=A(m,r,5)####5均线
+for(i in 1:m)
+{
+  if(i<=20) 
+  {
+      xianjin[j,1]=100000
+      mxh=append(mxh,0)
+      bj=append(bj,0)
+      r[j,1]=0
+  }
+  else
+  {
+    if(IBM[i,2]>q1[i]&&IBM[i-1,2]<=q1[i-1])###买信号
+    {
+      xianjin[i,1]=xianjin[i-1,1]-IBM[i,2]
+      mxh=append(mxh,i)
+      bj=append(bj,1)
+      r[i,1]=1
+    }
+    else
+    {
+      xianjin[i,1]=xianjin[i-1,1]
+    }
+  }
+}
+####卖点
+for(z in 21:m)
+{
+  if(IBM[z,2]<q1[z]&&IBM[z-1,2]>=q1[z-1])
+  {
+    for(k in 21:z)
+    {
+      if(r[k,1]==1)
+      {
+        xianjin[z,1]=xianjin[z-1]+IBM[z,2]
+        r[k,1]=0
+      }
+    }
+  }
+  else
+  {
+    xianjin[z,1]=xianjin[z-1,1]
+  }
+  
+}
+CYD=cbind(IBM,xianjin)
+write.csv(CYD,"C:/Users/Administrator/Desktop/结果.csv")#######
+################
+################
+################
+####双均线(5,20)
+for(i in 1:m)
+{
+  if(i<=20) 
+  {
+    xianjin[j,1]=100000
+    mxh=append(mxh,0)
+    bj=append(bj,0)
+    r[j,1]=0
+  }
+  else
+  {
+    if(q2[i]>q1[i]&&q2[i-1]<=q1[i-1])###买信号
+    {
+      xianjin[i,1]=xianjin[i-1,1]-q2[i]
+      mxh=append(mxh,i)
+      bj=append(bj,1)
+      r[i,1]=1
+    }
+    else
+    {
+      xianjin[i,1]=xianjin[i-1,1]
+    }
+  }
+}
+####卖点
+for(z in 21:m)
+{
+  if(q2[z]<q1[z]&&q2[z-1]>=q1[z-1])
+  {
+    for(k in 21:z)
+    {
+      if(r[k,1]==1)
+      {
+        xianjin[z,1]=xianjin[z-1]+q2[z]
+        r[k,1]=0
+      }
+    }
+  }
+  else
+  {
+    xianjin[z,1]=xianjin[z-1,1]
+  }
+  
+}
+CYD2=cbind(IBM,xianjin)
+write.csv(CYD2,"C:/Users/Administrator/Desktop/结果2.csv")#######
